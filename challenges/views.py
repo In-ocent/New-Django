@@ -4,18 +4,31 @@ from django.urls import reverse
 # Create your views here.
 
 monthly_challenges = {
-    "january": "<h1>Eat no meat for this month!</h1>",
-    "february": "<h1>Work for at leat 20 minutes every day</h1>",
-    "march": "<h1> Learn Django for at leas 20 minutes every day </h1>",
-    "april": "<h1> Learn Django for at leas 20 minutes every day </h1>",
-    "may": "<h1>Eat no meat for this month!</h1>",
-    "june": "<h1> Learn Django for at leas 20 minutes every day </h1>",
-    "july": "<h1> Learn Django for at leas 20 minutes every day </h1>",
-    "august": "<h1> Learn Django for at leas 20 minutes every day </h1>",
-    "september": "<h1> Learn Django for at leas 20 minutes every day </h1>",
-    "november": "<h1> Learn Django for at leas 20 minutes every day </h1>",
-    "december": "<h1> Learn Django for at leas 20 minutes every day </h1>",
+    "january": "Eat no meat for this month!",
+    "february": "Work for at leat 20 minutes every day",
+    "march": " Learn Django for at leas 20 minutes every day ",
+    "april": " Learn Django for at leas 20 minutes every day ",
+    "may": "Eat no meat for this month!",
+    "june": " Learn Django for at leas 20 minutes every day ",
+    "july": " Learn Django for at leas 20 minutes every day ",
+    "august": " Learn Django for at leas 20 minutes every day ",
+    "september": " Learn Django for at leas 20 minutes every day ",
+    "november": " Learn Django for at leas 20 minutes every day ",
+    "december": " Learn Django for at leas 20 minutes every day ",
 }
+
+
+def index(request):
+    list_items = ""
+    months = list(monthly_challenges.keys())
+
+    for month in months:
+        capitalized_month = month.capitalize()
+        month_path = reverse("month-challenge", args=[month])
+        list_items += f"<li><a href=\'{month_path}\'>{capitalized_month}</a></li>"
+
+    response_data = F"<ul>{list_items}</ul>"
+    return HttpResponse(response_data)
 
 
 def monthly_challenge_by_number(request, month):
@@ -32,6 +45,7 @@ def monthly_challenge_by_number(request, month):
 def monthly_challenge(request, month):
     try:
         challenge_text = monthly_challenges[month]
-        return HttpResponse(challenge_text)
+        respond_data = f"<h1>{challenge_text}</h1>"
+        return HttpResponse(respond_data)
     except:
-        return HttpResponseNotFound("This month is not supported!")
+        return HttpResponseNotFound("<h4>This month is not supported!</h4>")
